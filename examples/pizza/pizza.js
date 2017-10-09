@@ -31,6 +31,7 @@ function Pizza() {
   events.EventEmitter.call(this);
   this.toppings = PizzaToppings.NONE;
   this.crust = PizzaCrust.NORMAL;
+  this.button = 0;
 }
 
 util.inherits(Pizza, events.EventEmitter);
