@@ -21,7 +21,6 @@ function AccZCharacteristic(){
 			})
 		]
 	});
-	this.pizza = pizza;	
 }
 
 util.inherits(AccZCharacteristic, bleno.Characteristic);
@@ -44,7 +43,7 @@ AccZCharacteristic.prototype.onReadRequest = function(offset, callback) {
 		callback(this.RESULT_ATTR_NOT_LONG, null);
 	}
 	else {
-		var acc_z = new.Buffer(2)
+		var acc_z = new Buffer(2)
 		adxl345.getAcceleration(true) // true for g-force units, else false for m/s²
 			.then((acceleration) => {
 				acc_z = acceleration["z"];
@@ -53,7 +52,7 @@ AccZCharacteristic.prototype.onReadRequest = function(offset, callback) {
 				console.log(`ADXL345 read error: ${err}`);
 				//setTimeout(getAcceleration, 2000);
 			});
-		callback(this.RESULT_SUCCESS, data.writeUInt16BE(5, 0)
+		callback(this.RESULT_SUCCESS, data.writeUInt16BE(5, 0))
 		//var data = new Buffer(2);
 		//data.writeUInt16BE(this.pizza.toppings, 0);
 		//callback(this.RESULT_SUCCESS, data);

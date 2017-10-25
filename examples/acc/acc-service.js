@@ -10,8 +10,8 @@ function AccService() {
 		uuid: '13333333333333333333333333333337',
 		characteristics: [
 			new AccXCharacteristic(),
-			new AccYCharacteristic(),
-			new AccZCharacteristic()
+		//	new AccYCharacteristic(),
+		//	new AccZCharacteristic()
 		]
 	});
 }

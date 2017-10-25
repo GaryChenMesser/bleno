@@ -5,7 +5,7 @@ var AccService = require('./acc-service');
 
 var name = 'AccSquat';
 //var pizzaService = new PizzaService(new pizza.Pizza());
-var accervice = new AccService()
+var accService = new AccService()
 
 //
 // Wait until the BLE radio powers on before attempting to advertise.
