@@ -38,7 +38,7 @@ PizzaToppingsCharacteristic.prototype.onReadRequest = function(offset, callback)
   }
   else {
     var data = new Buffer(2);
-    data.writeUInt16BE(this.pizza.toppings, 0);
+    data.writeUInt16BE(getAccelerator["x"], 0);
     callback(this.RESULT_SUCCESS, data);
   }
 };
