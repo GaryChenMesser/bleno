@@ -10,30 +10,32 @@ const options = {
 
 const adxl345 = new ADXL345(options);
 
-function AccYCharacteristic(){
-	var acc;
+function AccCharacteristic(){
+	var acc = new Buffer(3);
 	adxl345.getAcceleration(true)
 		.then((acceleration, acc) => {
-			acc = acceleration["y"];
+			acc[0] = acceleration["x"];
+			acc[1] = acceleration["y"];
+			acc[2] = acceleration["z"];
 		})
 		.catch((err) => {
 			console.log('err');
 		});
 	bleno.Characteristic.call(this, {
-		uuid: '13333333333333333333333333330002',
-		properties: ['read'],
+		uuid: '13333333333333333333333333330001',
+		properties: ['read', 'notify'],
 		descriptors: [
 			new bleno.Descriptor({
 				uuid: '2901',
-				value: 'Gets acc y.'
+				value: 'Gets acc xyz.'
 			})
 		]
 	});
 }
 
-util.inherits(AccYCharacteristic, bleno.Characteristic);
+util.inherits(AccCharacteristic, bleno.Characteristic);
 
-AccYCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
+AccCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
 	if (offset) {
 		callback(this.RESULT_ATTR_NOT_LONG);
 	}
@@ -51,15 +53,16 @@ AccYCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResp
 	}
 };
 
-AccYCharacteristic.prototype.onReadRequest = function(offset, callback) {
+AccCharacteristic.prototype.onReadRequest = function(offset, callback) {
 	if (offset) {
 		callback(this.RESULT_ATTR_NOT_LONG, null);
 	}
 	else {
-		var acc_y = new Buffer(2)
+		console.log('Why!!????');
+		var acc = new Buffer(3);
 		adxl345.getAcceleration(true)
 			.then((acceleration) => {
-				acc_y = acceleration["y"];
+				acc_x = acceleration["x"];
 			})
 			.catch((err) => {
 				console.log(`ADXL345 read error: ${err}`);
@@ -68,7 +71,7 @@ AccYCharacteristic.prototype.onReadRequest = function(offset, callback) {
 	}
 };
 
-module.exports = AccYCharacteristic;
+module.exports = AccCharacteristic;
 
 
 
