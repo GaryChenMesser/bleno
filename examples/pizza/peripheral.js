@@ -24,9 +24,10 @@ const adxl345 = new ADXL345(options);
 
 // Read ADXL345 three-axis acceleration, repeat
 //
-const getAccelerationX = () => {
+const getAccelerationX = (acc_x) => {
   adxl345.getAcceleration(true) // true for g-force units, else false for m/s²
     .then((acceleration) => {
+      acc_x = acceleration["x"];
       console.log(`acceleration = ${JSON.stringify(acceleration["x"], null, 2)}`);
       //setTimeout(getAcceleration, 1000);
     })
