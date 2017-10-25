@@ -11,6 +11,14 @@ const options = {
 const adxl345 = new ADXL345(options);
 
 function AccYCharacteristic(){
+	var acc;
+	adxl345.getAcceleration(true)
+		.then((acceleration, acc) => {
+			acc = acceleration["y"];
+		})
+		.catch((err) => {
+			console.log('err');
+		});
 	bleno.Characteristic.call(this, {
 		uuid: '13333333333333333333333333330002',
 		properties: ['read'],
@@ -25,18 +33,23 @@ function AccYCharacteristic(){
 
 util.inherits(AccYCharacteristic, bleno.Characteristic);
 
-//AccXCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
-//	if (offset) {
-//		callback(this.RESULT_ATTR_NOT_LONG);
-//	}
-//	else if (data.length !== 2) {
-//		callback(this.RESULT_INVALID_ATTRIBUTE_LENGTH);
-//	}
-//	else {
-//		this.pizza.toppings = data.readUInt16BE(0);
-//		callback(this.RESULT_SUCCESS);
-//	}
-//};
+AccYCharacteristic.prototype.onWriteRequest = function(data, offset, withoutResponse, callback) {
+	if (offset) {
+		callback(this.RESULT_ATTR_NOT_LONG);
+	}
+	else if (data.length !== 2) {
+		callback(this.RESULT_INVALID_ATTRIBUTE_LENGTH);
+	}
+	else {
+		console.log('I love TingTing');
+		var times = data.readUInt16BE(0);
+		var self = this;
+		if(self.updateValueCallback){
+			self.updateValueCallback(acc);
+		}
+		callback(this.RESULT_SUCCESS);
+	}
+};
 
 AccYCharacteristic.prototype.onReadRequest = function(offset, callback) {
 	if (offset) {
@@ -44,18 +57,14 @@ AccYCharacteristic.prototype.onReadRequest = function(offset, callback) {
 	}
 	else {
 		var acc_y = new Buffer(2)
-		adxl345.getAcceleration(true) // true for g-force units, else false for m/s²
+		adxl345.getAcceleration(true)
 			.then((acceleration) => {
 				acc_y = acceleration["y"];
 			})
 			.catch((err) => {
 				console.log(`ADXL345 read error: ${err}`);
-				//setTimeout(getAcceleration, 2000);
 			});
 		callback(this.RESULT_SUCCESS, data.writeUInt16BE(3, 0))
-		//var data = new Buffer(2);
-		//data.writeUInt16BE(this.pizza.toppings, 0);
-		//callback(this.RESULT_SUCCESS, data);
 	}
 };
 
