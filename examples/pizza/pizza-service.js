@@ -4,7 +4,6 @@ var bleno = require('../..');
 var PizzaCrustCharacteristic = require('./pizza-crust-characteristic');
 var PizzaToppingsCharacteristic = require('./pizza-toppings-characteristic');
 var PizzaBakeCharacteristic = require('./pizza-bake-characteristic');
-var PizzaButtonCharacteristic = require('./pizza-button-characteristic');
 
 function PizzaService(pizza) {
     bleno.PrimaryService.call(this, {
@@ -13,7 +12,6 @@ function PizzaService(pizza) {
             new PizzaCrustCharacteristic(pizza),
             new PizzaToppingsCharacteristic(pizza),
             new PizzaBakeCharacteristic(pizza),
-            new PizzaButtonCharacteristic(pizza)
         ]
     });
 }
